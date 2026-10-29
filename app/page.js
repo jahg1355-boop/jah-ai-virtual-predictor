@@ -1,0 +1,79 @@
+
+"use client";
+
+import { useState } from "react";
+
+export default function Home() {
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  function uploadImage(event) {
+    const selected = event.target.files?.[0];
+    if (!selected) return;
+    if (!selected.type.startsWith("image/")) {
+      setResult("Please select an image.");
+      return;
+    }
+    if (selected.size > 8 * 1024 * 1024) {
+      setResult("Image must be smaller than 8 MB.");
+      return;
+    }
+    setFile(selected);
+    setPreview(URL.createObjectURL(selected));
+    setResult("");
+  }
+
+  async function analyze() {
+    if (!file) {
+      setResult("Upload a SportyBet screenshot first.");
+      return;
+    }
+    setLoading(true);
+    setResult("");
+    try {
+      const body = new FormData();
+      body.append("image", file);
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        body
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Analysis failed.");
+      setResult(data.analysis || "No analysis was returned.");
+    } catch (error) {
+      setResult(error.message || "Could not analyze the screenshot.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <main style={{ minHeight: "100vh", background: "#080d0a", color: "#f4f8f4", padding: "24px 16px", fontFamily: "Arial, sans-serif" }}>
+      <div style={{ maxWidth: 620, margin: "0 auto" }}>
+        <p style={{ color: "#baff69", letterSpacing: 3, fontWeight: 800 }}>JAH AI</p>
+        <h1 style={{ fontSize: "clamp(30px, 8vw, 48px)", marginBottom: 8 }}>VIRTUAL PREDICTOR</h1>
+        <p style={{ color: "#aab8ae", lineHeight: 1.6 }}>Upload a virtual football screenshot for AI-assisted match information extraction and analysis.</p>
+
+        <section style={{ border: "1px solid #2c4030", borderRadius: 20, padding: 20, marginTop: 24, background: "#101813" }}>
+          <h2>Upload match screenshot</h2>
+          <label style={{ display: "block", border: "2px dashed #53704d", borderRadius: 14, padding: 22, textAlign: "center", cursor: "pointer" }}>
+            <span style={{ color: "#baff69", fontWeight: 700 }}>Choose image from phone</span>
+            <input type="file" accept="image/*" onChange={uploadImage} style={{ display: "block", marginTop: 14, width: "100%" }} />
+          </label>
+
+          {preview && <img src={preview} alt="Uploaded screenshot" style={{ width: "100%", marginTop: 18, borderRadius: 12 }} />}
+
+          <button onClick={analyze} disabled={loading} style={{ width: "100%", marginTop: 18, padding: 16, border: 0, borderRadius: 12, background: "#baff69", color: "#101810", fontWeight: 800, fontSize: 16 }}>
+            {loading ? "Analyzing..." : "Analyze screenshot"}
+          </button>
+
+          {result && <div aria-live="polite" style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere", marginTop: 20, padding: 16, borderRadius: 12, background: "#080d0a", lineHeight: 1.6 }}>{result}</div>}
+        </section>
+
+        <p style={{ marginTop: 22, fontSize: 13, color: "#9eaca2", lineHeight: 1.6 }}>AI analysis is not a guarantee of match outcomes. Virtual football results may be random; gamble responsibly.</p>
+      </div>
+    </main>
+  );
+}
