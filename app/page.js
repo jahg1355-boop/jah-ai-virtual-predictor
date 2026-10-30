@@ -95,6 +95,94 @@ const [paymentMessage, setPaymentMessage] = useState("");
         <p style={{ color: "#aab8ae", lineHeight: 1.6 }}>Upload a virtual football screenshot for AI-assisted match information extraction and analysis.</p>
 
         <section style={{ border: "1px solid #2c4030", borderRadius: 20, padding: 20, marginTop: 24, background: "#101813" }}>
+          <section style={{
+  border: "1px solid #294236",
+  borderRadius: 16,
+  padding: 18,
+  marginBottom: 22,
+  background: "#101a16"
+}}>
+  <h2 style={{ color: "#baff69" }}>
+    Choose Your Prediction Package
+  </h2>
+
+  <p style={{ color: "#aab8ae" }}>
+    Enter your email and select a package to pay securely with Paystack.
+  </p>
+
+  <input
+    type="email"
+    placeholder="Enter your email address"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    style={{
+      width: "100%",
+      padding: 14,
+      borderRadius: 9,
+      marginBottom: 16,
+      background: "#202b25",
+      color: "white",
+      border: "1px solid #526357",
+      boxSizing: "border-box"
+    }}
+  />
+
+  {[
+    { id: "starter", name: "Starter", price: "GH₵350", uploads: "2 uploads", odds: "Odds 2–5" },
+    { id: "silver", name: "Silver", price: "GH₵550", uploads: "3 uploads", odds: "Odds 5–10" },
+    { id: "gold", name: "Gold", price: "GH₵850", uploads: "4 uploads", odds: "Odds 10–20" },
+    { id: "vip", name: "VIP", price: "GH₵1,000", uploads: "5 uploads", odds: "Odds 20–30" }
+  ].map((item) => (
+    <div
+      key={item.id}
+      style={{
+        border: "1px solid #405447",
+        borderRadius: 12,
+        padding: 14,
+        marginBottom: 12
+      }}
+    >
+      <h3 style={{ color: "#baff69", margin: "0 0 8px" }}>
+        {item.name}
+      </h3>
+
+      <h2 style={{ color: "white", margin: "0 0 8px" }}>
+        {item.price}
+      </h2>
+
+      <p style={{ color: "#aab8ae" }}>
+        {item.uploads} • {item.odds}
+      </p>
+
+      <button
+        onClick={() => buyPackage(item.id)}
+        disabled={paymentLoading}
+        style={{
+          width: "100%",
+          padding: 13,
+          borderRadius: 9,
+          border: "none",
+          background: "#baff69",
+          color: "#101a16",
+          fontWeight: "bold",
+          cursor: "pointer"
+        }}
+      >
+        {paymentLoading ? "Please wait..." : "Buy Package"}
+      </button>
+    </div>
+  ))}
+
+  {paymentMessage && (
+    <p style={{ color: "#ff7777" }}>
+      {paymentMessage}
+    </p>
+  )}
+
+  <p style={{ color: "#aab8ae", fontSize: 12 }}>
+    Payments are processed through Paystack. Available payment methods depend on checkout eligibility.
+  </p>
+</section>
           <h2>Upload match screenshot</h2>
           <label style={{ display: "block", border: "2px dashed #53704d", borderRadius: 14, padding: 22, textAlign: "center", cursor: "pointer" }}>
             <span style={{ color: "#baff69", fontWeight: 700 }}>Choose image from phone</span>
