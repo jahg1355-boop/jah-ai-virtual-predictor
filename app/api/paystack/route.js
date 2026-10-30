@@ -83,7 +83,37 @@ export async function POST(request) {
         { status: 400 }
       );
     }
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error("Supabase is not configured.");
+}
+
+const savePayment = await fetch(
+  `${supabaseUrl}/rest/v1/payments`,
+  {
+    method: "POST",
+    headers: {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      reference: result.data.reference,
+      email,
+      package_id: packageId,
+      amount_pesewa: selected.amount,
+      uploads: selected.uploads,
+      status: "pending",
+    }),
+  }
+);
+
+if (!savePayment.ok) {
+  throw new Error("Could not save pending payment.");
+}
     return Response.json({
       authorization_url: result.data.authorization_url,
       reference: result.data.reference,
