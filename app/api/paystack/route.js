@@ -104,7 +104,7 @@ const savePayment = await fetch(
       reference: result.data.reference,
       email,
       package_id: packageId,
-      amount_pesewa: selected.amount,
+      amount_pesewas: selected.amount,
       uploads: selected.uploads,
       status: "pending",
     }),
