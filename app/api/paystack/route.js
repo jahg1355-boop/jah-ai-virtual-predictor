@@ -64,7 +64,7 @@ export async function POST(request) {
           amount: selected.amount,
           currency: "GHS",
           channels: ["card", "mobile_money"],
-          callback_url: `${new URL(request.url).origin}/`,
+          callback_url: `${new URL(request.url).origin}/api/paystack/verify`,
           metadata: {
             package_id: packageId,
             package_name: selected.name,
