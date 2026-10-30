@@ -8,7 +8,9 @@ export default function Home() {
   const [preview, setPreview] = useState("");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
-
+const [email, setEmail] = useState("");
+const [paymentLoading, setPaymentLoading] = useState(false);
+const [paymentMessage, setPaymentMessage] = useState("");
   function uploadImage(event) {
     const selected = event.target.files?.[0];
     if (!selected) return;
