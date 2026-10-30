@@ -27,7 +27,43 @@ const [paymentMessage, setPaymentMessage] = useState("");
     setResult("");
   }
 
-  async function analyze() {
+  async function analyze() {async function buyPackage(packageId) {
+  if (!email || !email.includes("@")) {
+    setPaymentMessage("Please enter a valid email address.");
+    return;
+  }
+
+  setPaymentLoading(true);
+  setPaymentMessage("");
+
+  try {
+    const response = await fetch("/api/paystack", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        packageId,
+        email,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Payment could not start.");
+    }
+
+    if (!data.authorization_url) {
+      throw new Error("Paystack checkout link was not returned.");
+    }
+
+    window.location.href = data.authorization_url;
+  } catch (error) {
+    setPaymentMessage(error.message || "Payment failed.");
+    setPaymentLoading(false);
+  }
+}
     if (!file) {
       setResult("Upload a SportyBet screenshot first.");
       return;
