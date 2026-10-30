@@ -27,7 +27,7 @@ const [paymentMessage, setPaymentMessage] = useState("");
     setResult("");
   }
 
-  async function analyze() {async function buyPackage(packageId) {
+  async function buyPackage(packageId) {
   if (!email || !email.includes("@")) {
     setPaymentMessage("Please enter a valid email address.");
     return;
@@ -64,7 +64,7 @@ const [paymentMessage, setPaymentMessage] = useState("");
     setPaymentLoading(false);
   }
 }
-    if (!file) {
+   async function analyze() {
       setResult("Upload a SportyBet screenshot first.");
       return;
     }
