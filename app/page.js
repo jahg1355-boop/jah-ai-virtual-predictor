@@ -94,7 +94,7 @@ const [paymentMessage, setPaymentMessage] = useState("");
         <h1 style={{ fontSize: "clamp(30px, 8vw, 48px)", marginBottom: 8 }}>VIRTUAL PREDICTOR</h1>
         <p style={{ color: "#aab8ae", lineHeight: 1.6 }}>Upload a virtual football screenshot for AI-assisted match information extraction and analysis.</p>
 
-        <section style={{ border: "1px solid #2c4030", borderRadius: 20, padding: 20, marginTop: 24, background: "#101813" }}>
+        
           <section style={{
   border: "1px solid #294236",
   borderRadius: 16,
